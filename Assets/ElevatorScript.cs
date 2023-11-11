@@ -6,7 +6,7 @@ public class ElevatorScript : MonoBehaviour
     public TruckManager truckManager;
     public PointsManager pointsManager;
 
-    List<GameObject> DestroyedPacks = new List<GameObject>();
+    public List<GameObject> DestroyedPacks = new List<GameObject>();
     //public float triggerPercentage = 20f;
 
     //private bool hasDestroyedPacks = false;
@@ -38,17 +38,17 @@ public class ElevatorScript : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         //if (other.CompareTag("pack") && !hasDestroyedPacks)
-     //   {
-            //Destroy(other.gameObject); // Usuñ paczkê, jeœli jeszcze nie zniszczono
-    //    }
+        //   {
+        //Destroy(other.gameObject); // Usuñ paczkê, jeœli jeszcze nie zniszczono
+        //    }
     }
 
     private void DeactivateElevator()
     {
-    //    if (!hasDestroyedPacks)
-  //      {
+        //    if (!hasDestroyedPacks)
+        //      {
 
-   //     }
+        //     }
         DestroyPacks(); // Usuñ paczki, jeœli jeszcze nie zniszczono
         gameObject.SetActive(false); // Dezaktywuj windê
 
@@ -58,7 +58,8 @@ public class ElevatorScript : MonoBehaviour
     void DestroyPacks()
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, 4.0f); // Dostosuj promieñ wed³ug potrzeb
-        PointsManager.CountPoints();
+        pointsManager.Pacs = DestroyedPacks;
+        //pointsManager.CountPoints();
 
         foreach (Collider collider in colliders)
         {
@@ -69,8 +70,9 @@ public class ElevatorScript : MonoBehaviour
                 DestroyedPacks.Add(collider.gameObject);
 
                 // Mo¿esz opcjonalnie wywo³aæ Destroy, jeœli chcesz go równie¿ usun¹æ z gry
-                Destroy(collider.gameObject);
+                //Destroy(collider.gameObject);
             }
         }
+        pointsManager.Count();
     }
 }

@@ -8,7 +8,7 @@ public class Shelf : MonoBehaviour
     {
         //this.czyZajeta = czyZajeta;
         czyZajeta = true;
-        Debug.Log("Zajêcie");
+        //Debug.Log("Zajêcie");
     }
 
     public void UstawWolna()

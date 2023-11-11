@@ -48,7 +48,7 @@ public class TrunkEvent : MonoBehaviour
         foreach (GameObject citySlot in landingSpots)
         {
             citySlot.SetActive(false);
-            Debug.Log("Aktywacja");
+            //Debug.Log("Aktywacja");
         }
 
         // Aktywuj obiekt odpowiadaj¹cy wylosowanemu miastu
