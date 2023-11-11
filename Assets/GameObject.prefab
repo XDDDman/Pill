@@ -32,7 +32,7 @@ Transform:
   m_Children:
   - {fileID: 8196408910427411771}
   m_Father: {fileID: 0}
-  m_RootOrder: 21
+  m_RootOrder: 42
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &19922746359282066
 BoxCollider:
@@ -67,6 +67,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 751c1f0ec5187374abad226844271f34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  czyZajeta: 0
 --- !u!1 &2308474238411139399
 GameObject:
   m_ObjectHideFlags: 0
@@ -115,7 +116,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2308474238411139399}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
