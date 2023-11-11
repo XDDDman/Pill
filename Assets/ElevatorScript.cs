@@ -4,6 +4,9 @@ using UnityEngine;
 public class ElevatorScript : MonoBehaviour
 {
     public TruckManager truckManager;
+    public PointsManager pointsManager;
+
+    List<GameObject> DestroyedPacks = new List<GameObject>();
     //public float triggerPercentage = 20f;
 
     //private bool hasDestroyedPacks = false;
@@ -55,13 +58,17 @@ public class ElevatorScript : MonoBehaviour
     void DestroyPacks()
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, 4.0f); // Dostosuj promieñ wed³ug potrzeb
+        PointsManager.CountPoints();
 
         foreach (Collider collider in colliders)
         {
             // Sprawdzamy, czy obiekt ma odpowiedni tag
             if (collider.CompareTag("pack"))
             {
-                // Usuwamy obiekt
+                // Dodajemy obiekt do listy zamiast go niszczyæ
+                DestroyedPacks.Add(collider.gameObject);
+
+                // Mo¿esz opcjonalnie wywo³aæ Destroy, jeœli chcesz go równie¿ usun¹æ z gry
                 Destroy(collider.gameObject);
             }
         }

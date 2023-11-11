@@ -1,53 +1,49 @@
 using UnityEngine;
 
-public class RzutObiektem : MonoBehaviour
+public class TeleportScript : MonoBehaviour
 {
-    public float silaRzutu = 10f;
-    private Transform obiektDoRzucenia;
-    public GameObject packHandling;
+    private Transform childTransform;
+    public TeleportacjaPack teleportacjaPack;
+
+    void Start()
+    {
+
+    }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(1))
+        // Zak³adamy, ¿e dziecko jest pierwszym dzieckiem obiektu gracza
+        if (transform.childCount > 0)
         {
-            ToggleChildObject();
-        }
-    }
-
-    void ToggleChildObject()
-    {
-        if (obiektDoRzucenia == null)
-        {
-            // Jeœli obiekt do rzucenia nie istnieje, przypisz go jako dziecko
-            if (transform.childCount > 0)
-            {
-                obiektDoRzucenia = transform.GetChild(0);
-            }
-            else
-            {
-                Debug.LogError("Brak dziecka do przypisania!");
-                return;
-            }
+            childTransform = transform.GetChild(0);
         }
         else
         {
-            // Jeœli obiekt do rzucenia istnieje, usuñ go z rodzica
-            obiektDoRzucenia.parent = null;
+            childTransform = null;
+        }
 
-            // Dodaj si³ê do rzucanego obiektu
-            Rigidbody rb = obiektDoRzucenia.GetComponent<Rigidbody>();
-            if (rb != null)
+        // Sprawdzamy, czy istnieje dziecko i czy wciœniêto prawy przycisk myszy (PPM)
+        if (childTransform != null && Input.GetMouseButtonDown(1))
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, Vector3.down, out hit))
             {
-                rb.AddForce(transform.forward * silaRzutu, ForceMode.Impulse);
-            }
-            else
-            {
-                Debug.LogError("Obiekt do rzucenia nie ma komponentu Rigidbody!");
-            }
+                if (hit.collider.CompareTag("wind"))
+                {
+                    // Teleportujemy dziecko o 2 jednostki przed obiektem gracza
+                    Vector3 offset = transform.forward * 4f;
+                    childTransform.position = transform.position + offset;
 
-            // Zresetuj referencjê do obiektu do rzucenia
-            obiektDoRzucenia = null;
-            packHandling.GetComponent<TeleportacjaPack>().czyNosziPack = false;
+                    // "Odczepiamy" dziecko, przestaje byæ childem obiektu gracza
+                    childTransform.parent = null;
+
+                    teleportacjaPack.czyNosziPack = false;
+                }
+                else
+                {
+                    Debug.Log("Gracz nie jest na obiekcie z tagiem 'wind'.");
+                }
+            }
         }
     }
 }

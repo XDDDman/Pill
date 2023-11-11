@@ -13,6 +13,16 @@ public class TeleportacjaPack : MonoBehaviour
 
     void Update()
     {
+        // SprawdŸ, czy obiekt ma 1 lub wiêcej dzieci w czasie rzeczywistym
+        if (transform.childCount >= 1)
+        {
+            czyNosziPack = true;
+        }
+        else
+        {
+            czyNosziPack = false;
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             Ray promienMyszy = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -35,7 +45,7 @@ public class TeleportacjaPack : MonoBehaviour
                             aktualnaPaczka = trafienie.collider.transform;
 
                             // Oznacz pó³kê jako zajêt¹
-                            trafienie.collider.transform.GetComponent<Shelf>().UstawWolna();
+                            //trafienie.collider.transform.GetComponent<Shelf>().UstawWolna();
                         }
                     }
                     else

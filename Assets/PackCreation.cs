@@ -8,6 +8,7 @@ public class PackCreation : MonoBehaviour
     public List<string> typy;
 
     public List<GameObject> prefabrykaty;
+    public PointsManager pointsManager;
 
     void Start()
     {
