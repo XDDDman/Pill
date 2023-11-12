@@ -1,78 +1,105 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
 public class Odliczanie : MonoBehaviour
 {
-    PointsManager pointsManager;
-    bool isCountingDown = false;
-    float countdownTimer = 30f;
+    public PointsManager pointsManager;
+    public TextMeshProUGUI countdownText;
 
-    public TextMeshProUGUI countdownText; // Dodaj to pole, aby przypisaæ tekst TMP w Unity Inspector
+    private float countdownTimer = 30f;
+    private bool countdownActivated = false;
+    private bool isCountingDown = true; // Nowa zmienna, aby œledziæ kierunek odliczania
 
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private bool isFull;
+
+    private void Start()
     {
-        pointsManager = GetComponent<PointsManager>();
-        countdownText.text = ""; // Pocz¹tkowo tekst bêdzie pusty
+        countdownText.gameObject.SetActive(false);
+        isFull = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (isCountingDown)
+        // Sprawdzamy, czy przynajmniej jeden z warunków jest spe³niony, aby aktywowaæ odliczanie
+        if ((pointsManager.points < 0 || isFull) && !countdownActivated)
         {
-            countdownTimer -= Time.deltaTime;
+            // Aktywujemy odliczanie
+            countdownActivated = true;
 
-            if (countdownTimer <= 0)
+            // Ustawiamy aktywnoœæ tekstu UI na true
+            countdownText.gameObject.SetActive(true);
+
+            // Ustawiamy kierunek odliczania
+            isCountingDown = true;
+        }
+
+        // Sprawdzamy, czy oba warunki przestaj¹ byæ spe³nione, aby zatrzymaæ odliczanie
+        if (countdownActivated && pointsManager.points >= 0 && !isFull)
+        {
+            // Zatrzymujemy odliczanie
+            countdownActivated = false;
+
+            // Wy³¹czamy tekst UI
+            countdownText.gameObject.SetActive(false);
+
+            // Resetujemy odliczanie
+            countdownTimer = 30f;
+        }
+
+        // Sprawdzamy, czy odliczanie zosta³o aktywowane
+        if (countdownActivated)
+        {
+            // Rozpoczynamy odliczanie w odpowiednim kierunku
+            if (isCountingDown)
             {
-                KoniecGry();
+                countdownTimer -= Time.deltaTime;
+            }
+            else
+            {
+                countdownTimer += Time.deltaTime;
             }
 
-            // Aktualizuj tekst TMP z odliczaniem
-            UpdateCountdownText();
+            // Aktualizujemy tekst w UI
+            countdownText.text = Mathf.Round(countdownTimer).ToString();
+
+            // Sprawdzamy, czy odliczanie osi¹gnê³o 0 lub 30 (w zale¿noœci od kierunku)
+            if ((countdownTimer <= 0 && isCountingDown) || (countdownTimer >= 30 && !isCountingDown))
+            {
+                // Tutaj mo¿esz dodaæ kod, który ma byæ wykonany po osi¹gniêciu 0 lub 30
+                // Na przyk³ad zresetowanie punktów, wywo³anie innej funkcji, itp.
+
+                // Zmieniamy kierunek odliczania
+                isCountingDown = !isCountingDown;
+
+                // Resetujemy odliczanie
+                countdownTimer = isCountingDown ? 30f : 0f;
+
+                // Jeœli osi¹gnê³o 0, to dezaktywujemy odliczanie
+                if (!isCountingDown)
+                {
+                    // Wy³¹czamy tekst UI
+                    countdownText.gameObject.SetActive(false);
+
+                    // Wy³¹czamy aktywacjê odliczania
+                    countdownActivated = false;
+                }
+            }
         }
-        else if (pointsManager.points < 0)
+
+        Shelf[] wszystkiePó³ki = GameObject.FindObjectsOfType<Shelf>();
+
+        bool wszystkieZajete = true;
+
+        foreach (Shelf pólka in wszystkiePó³ki)
         {
-            StartCountdown();
+            if (!pólka.CzyJestZajeta())
+            {
+                wszystkieZajete = false;
+                break; // Przerwij pêtlê, jeœli znaleziono chocia¿ jedn¹ niezajêt¹ pó³kê
+            }
         }
-        if (pointsManager.points >= 0 && countdownTimer < 30f)
-        {
-            StopCountdown();
-        }
 
-        if (countdownTimer == 30)
-        {
-
-        }
-    }
-
-    void StartCountdown()
-    {
-        isCountingDown = true;
-        Debug.Log("Rozpoczêto odliczanie!");
-    }
-
-    void StopCountdown()
-    {
-        isCountingDown = false;
-        countdownTimer = 30f;
-        Debug.Log("Zatrzymano odliczanie!");
-        UpdateCountdownText(); // Aktualizuj tekst, aby by³ widoczny
-    }
-
-    void KoniecGry()
-    {
-        // Tutaj mo¿esz umieœciæ kod, który ma byæ wywo³any po zakoñczeniu odliczania.
-        // Na przyk³ad mo¿esz dodaæ kod zakoñczenia gry, ponownego za³adowania sceny itp.
-        Debug.Log("Koniec gry!");
-        UpdateCountdownText(); // Aktualizuj tekst, aby by³ widoczny na zakoñczenie gry
-    }
-
-    void UpdateCountdownText()
-    {
-        // Aktualizuj tekst TMP z pozosta³ym czasem
-        countdownText.text = $"Czas: {Mathf.Ceil(countdownTimer)}s";
+        // Aktualizuj wartoœæ isFull na podstawie warunku
+        isFull = wszystkieZajete;
     }
 }
