@@ -13,8 +13,14 @@ public class PointsManager : MonoBehaviour
     public string parisObjectName = "Paris";
 
     public int points;
+    public int pointsStart;
 
     public TextMeshProUGUI pointsText; // Dodaj referencjê do komponentu TMP
+
+    private void Start()
+    {
+        points = pointsStart;
+    }
 
     void Update()
     {
