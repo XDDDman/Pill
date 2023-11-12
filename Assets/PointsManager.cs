@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PointsManager : MonoBehaviour
 {
@@ -12,6 +13,14 @@ public class PointsManager : MonoBehaviour
     public string parisObjectName = "Paris";
 
     public int points;
+    public int pointsStart;
+
+    public TextMeshProUGUI pointsText; // Dodaj referencjê do komponentu TMP
+
+    private void Start()
+    {
+        points = pointsStart;
+    }
 
     void Update()
     {
@@ -70,32 +79,35 @@ public class PointsManager : MonoBehaviour
             Debug.Log("Obiekt o indeksie 0 jest aktywny!");
             // Tutaj mo¿esz dodaæ kod dla tego przypadku
 
-            points =+ tokyoCount * 25;
-            points =- londonCount * 5;
-            points =- parisCount * 5;
+            points += tokyoCount * 25;
+            points -= londonCount * 5;
+            points -= parisCount * 5;
         }
         else if (obiektyDoSprawdzenia[1].activeSelf)
         {
             Debug.Log("Obiekt o indeksie 1 jest aktywny!");
             // Tutaj mo¿esz dodaæ kod dla tego przypadku
 
-            points =+ londonCount * 25;
-            points =- parisCount * 5;
-            points =- tokyoCount * 5;
+            points -= tokyoCount * 5;
+            points += londonCount * 25;
+            points -= parisCount * 5;
         }
         else if (obiektyDoSprawdzenia[2].activeSelf)
         {
             Debug.Log("Obiekt o indeksie 2 jest aktywny!");
             // Tutaj mo¿esz dodaæ kod dla tego przypadku
 
-            points =+ parisCount * 25;
-            points =- londonCount *5;
-            points =- tokyoCount *5;
+            points -= tokyoCount * 5;
+            points -= londonCount * 5;
+            points += parisCount * 25;
         }
         else
         {
             Debug.Log("¯aden z obiektów nie jest aktywny!");
             // Tutaj mo¿esz dodaæ kod dla tego przypadku
         }
+
+        // Aktualizuj tekst w komponencie TMP
+        pointsText.text = "Points: " + points.ToString();
     }
 }
