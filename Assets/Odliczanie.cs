@@ -1,5 +1,7 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
+using Unity.VisualScripting;
 
 public class Odliczanie : MonoBehaviour
 {
@@ -20,6 +22,12 @@ public class Odliczanie : MonoBehaviour
 
     void Update()
     {
+        if (countdownTimer <= 1)
+        {
+            SceneManager.LoadScene("YOU LOST");
+            Debug.Log("Dead");
+        }
+
         // Sprawdzamy, czy przynajmniej jeden z warunków jest spe³niony, aby aktywowaæ odliczanie
         if ((pointsManager.points < 0 || isFull) && !countdownActivated)
         {
@@ -67,6 +75,13 @@ public class Odliczanie : MonoBehaviour
             {
                 // Tutaj mo¿esz dodaæ kod, który ma byæ wykonany po osi¹gniêciu 0 lub 30
                 // Na przyk³ad zresetowanie punktów, wywo³anie innej funkcji, itp.
+
+                if (!isCountingDown)
+                {
+                    // Jeœli osi¹gnê³o 0, to zmieñ scenê na "YOU LOST"
+                    SceneManager.LoadScene("YOU LOST");
+                    Debug.Log("OnApplicationLostFocus");
+                }
 
                 // Zmieniamy kierunek odliczania
                 isCountingDown = !isCountingDown;

@@ -63,8 +63,8 @@ public class ElevatorScript : MonoBehaviour
 
         foreach (Collider collider in colliders)
         {
-            // Sprawdzamy, czy obiekt ma odpowiedni tag
-            if (collider.CompareTag("pack"))
+            // Sprawdzamy, czy obiekt ma odpowiedni tag i nie jest dzieckiem ¿adnego obiektu
+            if (collider.CompareTag("pack") && collider.transform.parent == null)
             {
                 // Dodajemy obiekt do listy zamiast go niszczyæ
                 DestroyedPacks.Add(collider.gameObject);

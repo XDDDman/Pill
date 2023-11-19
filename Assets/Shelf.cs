@@ -27,12 +27,12 @@ public class Shelf : MonoBehaviour
         // SprawdŸ, czy pó³ka nie ma ju¿ dziecka z tagiem "pack" i ustaw czyZajeta na false
         if (transform.childCount > 1)
         {
-            //czyZajeta = true;
+            czyZajeta = true;
             //Debug.Log("trueee");
         }
         else
         {
-            //czyZajeta = false;
+            czyZajeta = false;
             //Debug.Log("falseee");
         }
     }
